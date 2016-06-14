@@ -21,7 +21,7 @@ road.lane_width = 8;
 
 
 %vehicle start pose
-start_pose = [ 0; 4;120/180*pi; 0; 0 ; 8;0];  % 
+start_pose = [ 0; 4;110/180*pi; 0; 0 ; 8;0];  % 
 % separation between sampled states
 station = 10;
 

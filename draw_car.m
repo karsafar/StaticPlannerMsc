@@ -21,9 +21,9 @@ front = [(dimension(2) + dimension(3))/2 0];
 
 
 
-
+% rotation counter-clockwise about the origin
 transformation = [cosd(position(3)) -sind(position(3)) position(1); sind(position(3)) cosd(position(3)) position(2); 0 0 1]*[rectangle' front'; ones(1,5)];
-h =plot([transformation(1,1:end-1) transformation(1,1)],[transformation(2,1:end-1) transformation(2,1)]);
+h = plot([transformation(1,1:end-1) transformation(1,1)],[transformation(2,1:end-1) transformation(2,1)]);
  set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
 
 hold on

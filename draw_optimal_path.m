@@ -71,7 +71,6 @@ if(draw_car_flag)
     draw_car(dimension,[path_x path_y theta(1)/pi*180])
 end
 for j = 2: length(s)
-    
     x1 =(integral_par_quartic(0,[param_abcde;s(j)],0,1,start_pose(3)) + start_pose(1));
     y1= (integral_par_quartic(0,[param_abcde;s(j)],1,1,start_pose(3)) + start_pose(2));
     path_x = [path_x x1];
