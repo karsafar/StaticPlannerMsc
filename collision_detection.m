@@ -66,5 +66,4 @@ positions = unique([positions_x positions_y],'rows','stable');
 %no of collisions
 
 %behaviour = 0;
-
 end
