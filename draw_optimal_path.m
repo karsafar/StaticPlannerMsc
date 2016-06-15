@@ -8,7 +8,7 @@ position_y = lattice.y;
 orientation = lattice.theta;
 curvature = lattice.curve;
 param_matrix = lattice.param ;
-v_vec=lattice.vel ;
+v_vec = lattice.vel ;
 
 %draw optimal
 time_acc = 0;

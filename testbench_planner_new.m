@@ -27,7 +27,7 @@ station = 10;
 
 start.distance = 10; % distance from the end of the road???
 
-final.distance = 200; % probably distance from the end of the road too.. ???
+final.distance = 82; % probably distance from the end of the road too.. ???
 
 
 %distance to simulate centreline and roundabout features after exit start

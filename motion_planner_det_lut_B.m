@@ -162,7 +162,7 @@ for i = (n_path-n_path_vec(1))/2 + 1:n_path_vec(1) + (n_path-n_path_vec(1))/2
     if(draw)&&(index<1)&&(kinematics<1)
     [x, y]= drawtrajec_abcde(parameters,[start_pose(1:4)],endpoint,20);
     hold on
-    h = plot(x,y,'-*g','LineWidth',1.5)
+    h = plot(x,y,'-*g','LineWidth',1.5);
     set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off')
 
     end
@@ -201,13 +201,13 @@ lattice.sample = sub_sample;
 %draw_car(dimension,[start_pose(1) start_pose(2) start_pose(3)/pi*180])
 %[ optimal_par] = dynamic07082015(param_matrix_start,start_pose,param_matrix,v_vec,centre_line,dimension, sub_sample,position_x,position_y,orientation, n_path_vec);
 [ optimal_par] = dynamic_eff(param_matrix_start,start_pose,param_matrix,v_vec,dimension, sub_sample,position_x,position_y,orientation, n_path_vec);
-no_coll = check_path(optimal_par,static_obstacle_matrix, lattice, start_car);
+no_coll = check_path(optimal_par, static_obstacle_matrix, lattice, start_car);
 if(no_coll>0)
-[ optimal_par] = dynamic_obs(param_matrix_start,start_pose,param_matrix,v_vec,dimension, sub_sample,position_x,position_y,orientation,n_path_vec,static_obstacle_matrix);
+[ optimal_par] = dynamic_obs(param_matrix_start, start_pose, param_matrix, v_vec, dimension, sub_sample, position_x, position_y, orientation, n_path_vec, static_obstacle_matrix);
 end
  
 draw_path = 1;
-draw_car_flag =0;
+draw_car_flag = 0;
 draw_optimal_path(optimal_par,start_car,lattice, draw_car_flag, draw_path)
 
 
@@ -300,7 +300,7 @@ weights = [ 1; 1; 100];
 scale = 1;
 
 %converting between parameters from p1, p2, p3,p4 to a b c d
-a=param_old(1);
+a = param_old(1);
 b = -(11*param_old(1) -18*param_old(2) +9*param_old(3) -2*param_old(4))/(2*param_old(end));
 c = 9*(2*param_old(1) - 5*param_old(2) + 4*param_old(3) - param_old(4))/(2*param_old(end)^2);
 d = -9*(param_old(1) -3*param_old(2) + 3*param_old(3) -param_old(4))/(2*param_old(end)^3);

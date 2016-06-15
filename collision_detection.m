@@ -4,9 +4,20 @@ function [no_of_coll positions] = collision_detection(obstacles,traj, dimension)
 %% what is that
 no_of_circles = 3;
 radius = sqrt(dimension(2)^2/(4*no_of_circles^2) + dimension(1)^2/4 );
-d = 2*sqrt(radius^2 -dimension(1)^2/4);
-centres = [d/2 0; d+d/2 0; 2*d+d/2 0]- [(dimension(2) - dimension(3))/2*ones(3,1) zeros(3,1) ];
-
+d = 2*sqrt(radius^2 - dimension(1)^2/4);
+centres = [d/2 0; d+d/2 0; 2*d+d/2 0] - [(dimension(2) - dimension(3))/2*ones(3,1) zeros(3,1) ];
+%% draw those circles and the car
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ang = 0:0.1:2*pi;
+xp = radius*cos(ang);
+yp = radius*sin(ang);
+plot(centres(1,1)+xp,centres(1,2)+yp)
+hold on
+plot(centres(2,1)+xp,centres(2,2)+yp)
+hold on
+plot(centres(3,1)+xp,centres(3,2)+yp)
+hold on
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% what is this transforamtion
 %transformation = [cosd(position(3)) -sind(position(3)) position(1); sind(position(3)) cosd(position(3)) position(2); 0 0 1]*[ centres'; ones(1,3)];

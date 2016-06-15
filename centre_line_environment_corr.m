@@ -4,7 +4,7 @@ function [static_obstacle_matrix, line_matrix_out ,centre_step_fine] =  centre_l
 
 total_dist = final.distance - start.distance; 
 
-centre_step_fine= single(total_dist/round(total_dist/0.5));
+centre_step_fine= single(total_dist/round(total_dist/1));
 
 steps  = total_dist/ centre_step_fine;
 % discretisation of the obstacles
@@ -22,6 +22,16 @@ end
 
 static_obstacle_matrix = [line_obs_x_left;line_obs_y_left;line_obs_x_right;line_obs_y_right];
 
+
+
+%% dummy code test for the obstacles
+for i = 1:size(static_obstacle_matrix,2)
+    if static_obstacle_matrix(2,i) == 25 
+    static_obstacle_matrix(1,i) = -0.5;
+    end
+    if static_obstacle_matrix(2,i) == 55 
+    static_obstacle_matrix(3,i) = 0.5;
+end
 
 
 % because it is straight line y for left and right are the same
