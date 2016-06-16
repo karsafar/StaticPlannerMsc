@@ -162,7 +162,7 @@ for i = (n_path-n_path_vec(1))/2 + 1:n_path_vec(1) + (n_path-n_path_vec(1))/2
     if(draw)&&(index<1)&&(kinematics<1)
     [x, y]= drawtrajec_abcde(parameters,[start_pose(1:4)],endpoint,20);
     hold on
-    h = plot(x,y,'-*g','LineWidth',1.5);
+    h = plot(x,y,'-g','LineWidth',1.5);
     set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off')
 
     end

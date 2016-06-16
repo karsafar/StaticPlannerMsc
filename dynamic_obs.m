@@ -64,9 +64,9 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
                 trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
                 
                 if (backtrack_cost(next_lateral,1,next_vel))>(0 + trajectory_cost)
-                    backtrack_cost(next_lateral,1,next_vel)= 0+ trajectory_cost;
+                    backtrack_cost(next_lateral,1,next_vel) = 0+ trajectory_cost;
                     
-                    backtrack_state(next_lateral,1,next_vel,:) =[1 vel];
+                    backtrack_state(next_lateral,1,next_vel,:) = [1 vel];
                     
                     
                 end

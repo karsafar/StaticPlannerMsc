@@ -1,7 +1,6 @@
 function [no_of_coll positions] = collision_detection(obstacles,traj, dimension)
 
 
-%% what is that
 no_of_circles = 3;
 radius = sqrt(dimension(2)^2/(4*no_of_circles^2) + dimension(1)^2/4 );
 d = 2*sqrt(radius^2 - dimension(1)^2/4);
@@ -19,7 +18,6 @@ plot(centres(3,1)+xp,centres(3,2)+yp)
 hold on
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% what is this transforamtion
 %transformation = [cosd(position(3)) -sind(position(3)) position(1); sind(position(3)) cosd(position(3)) position(2); 0 0 1]*[ centres'; ones(1,3)];
 transformation_x = cos(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,1)',size(traj,2),1)-sin(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,2)',size(traj,2),1) + repmat(traj(1,:)',1,no_of_circles);
   transformation_y =   sin(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,1)',size(traj,2),1)-cos(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,2)',size(traj,2),1) + repmat(traj(2,:)',1,no_of_circles);
@@ -28,7 +26,6 @@ transformation = [transformation_x(:)' ; transformation_y(:)' ];
 % circle2 = [radius.*cos(theta) + transformation(1,2);radius.*sin(theta) + transformation(2,2)  ];
 % circle3 = [radius.*cos(theta) + transformation(1,3);radius.*sin(theta) + transformation(2,3)  ];
 
-%% what is this
 replicax_car = repmat(transformation(1,:), size(obstacles,2),1);%to check if samples in points and centreline are equal
 replicax_obstacles_l = repmat(obstacles(1,:)',1,size(transformation,2));
 replicax_obstacles_r = repmat(obstacles(3,:)',1,size(transformation,2));

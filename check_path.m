@@ -29,9 +29,11 @@ theta = quartic_theta(param_abcde,0:param(end)/sub_sample:param(end),1,startpose
 no_coll_overall =[];
 coll_pos_overall=[];
 %output variables collision no per section and obstacles per section;
+%% collision check for the initial trajectories
 [no_coll_sec, coll_pos] = collision_detection(obstacles(:,1:sub_sample+1),[x';y';theta], dimension);
 no_coll_overall = [ no_coll_overall no_coll_sec];
 coll_pos_overall = [coll_pos_overall;coll_pos];
+%% collision check for all other sections
 for i = 2: length(optimal)-1
     startpoint = [pos_x(optimal(2,i),i-1); pos_y(optimal(2,i),i-1); orientation(optimal(2,i),i-1)];
     endpoint =[];
@@ -39,6 +41,9 @@ for i = 2: length(optimal)-1
     [no_coll_sec, coll_pos]= collision_detection(obstacles(:,(i-1)*sub_sample+1:(i-1)*sub_sample+1 +sub_sample +1) ,[x';y';theta1], dimension);
     no_coll_overall = [ no_coll_overall no_coll_sec];
     coll_pos_overall = [coll_pos_overall;coll_pos];
+    %% stick somewhere here the static obstacles code
+    [obstacle_matrix] = static_obstacles(dimension);
+    
 end
 
 no_coll= sum(no_coll_overall);

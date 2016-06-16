@@ -4,7 +4,7 @@ function [static_obstacle_matrix, line_matrix_out ,centre_step_fine] =  centre_l
 
 total_dist = final.distance - start.distance; 
 
-centre_step_fine= single(total_dist/round(total_dist/1));
+centre_step_fine= single(total_dist/round(total_dist/2));
 
 steps  = total_dist/ centre_step_fine;
 % discretisation of the obstacles
@@ -26,11 +26,12 @@ static_obstacle_matrix = [line_obs_x_left;line_obs_y_left;line_obs_x_right;line_
 
 %% dummy code test for the obstacles
 for i = 1:size(static_obstacle_matrix,2)
-    if static_obstacle_matrix(2,i) == 25 
-    static_obstacle_matrix(1,i) = -0.5;
-    end
+%     if static_obstacle_matrix(2,i) == 25 
+%         static_obstacle_matrix(1,i) = -0.5;
+%     end
     if static_obstacle_matrix(2,i) == 55 
-    static_obstacle_matrix(3,i) = 0.5;
+        static_obstacle_matrix(3,i) = 0.5;
+    end
 end
 
 
