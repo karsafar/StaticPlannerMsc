@@ -42,7 +42,7 @@ for i = 2: length(optimal)-1
     no_coll_overall = [ no_coll_overall no_coll_sec];
     coll_pos_overall = [coll_pos_overall;coll_pos];
     %% stick somewhere here the static obstacles code
-    [obstacle_matrix] = static_obstacles(dimension);
+    %[obstacle_matrix] = static_obstacles(dimension);
     
 end
 
