@@ -50,14 +50,14 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
                 %                         end
                 x(1) = start_pose(1);
                 y(1) = start_pose(2);
-                x(2:end)= integral_par_group_quart(0,[a;b;c;d;e],s(2:end),0,1, start_pose(3)) + x(1);
-                y(2:end)= integral_par_group_quart(0,[a;b;c;d;e],s(2:end),1,1, start_pose(3))+ y(1);
+                x(2:end) = integral_par_group_quart(0,[a;b;c;d;e],s(2:end),0,1, start_pose(3)) + x(1);
+                y(2:end) = integral_par_group_quart(0,[a;b;c;d;e],s(2:end),1,1, start_pose(3))+ y(1);
                 theta = quartic_theta([a;b;c;d;e],s,1,start_pose(3));
-                curvature=curvature_comp_quart([a;b;c;d;e],s,1);
-                curvature_dot= curvature_dot_comp_quart([a;b;c;d;e],s,1,vel_prof);
+                curvature = curvature_comp_quart([a;b;c;d;e],s,1);
+                curvature_dot = curvature_dot_comp_quart([a;b;c;d;e],s,1,vel_prof);
                 sample_traj_points = [x; y ;theta;curvature;curvature_dot; vel_prof;acc; jerk; T*ones(1,length(jerk))];
                 %trajectory_cost = total_cost(sample_traj_points,centre_line_seg,param(end), dimension);
-                children =full_set(:,1:7,next_lateral);
+                children = full_set(:,1:7,next_lateral);
                 
                 
                 %trajectory_cost= total_cost_r1(sample_traj_points,centre_line_seg,param(end), dimension,children);

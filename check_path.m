@@ -37,12 +37,12 @@ coll_pos_overall = [coll_pos_overall;coll_pos];
 for i = 2: length(optimal)-1
     startpoint = [pos_x(optimal(2,i),i-1); pos_y(optimal(2,i),i-1); orientation(optimal(2,i),i-1)];
     endpoint =[];
-    [x ,y ,theta1 ,curvature1 ,spacing]= drawtrajec_abcd(param_lattice(optimal(2,i+1),(i-2)*7 +1 :(i-2)*7 +5, optimal(2,i))' ,startpoint,endpoint,sub_sample);
-    [no_coll_sec, coll_pos]= collision_detection(obstacles(:,(i-1)*sub_sample+1:(i-1)*sub_sample+1 +sub_sample +1) ,[x';y';theta1], dimension);
+    [x ,y ,theta1 ,curvature1 ,spacing] = drawtrajec_abcd(param_lattice(optimal(2,i+1),(i-2)*7 +1 :(i-2)*7 +5, optimal(2,i))' ,startpoint,endpoint,sub_sample);
+    [no_coll_sec, coll_pos] = collision_detection(obstacles(:,(i-1)*sub_sample+1:(i-1)*sub_sample+1 +sub_sample +1) ,[x';y';theta1], dimension);
     no_coll_overall = [ no_coll_overall no_coll_sec];
-    coll_pos_overall = [coll_pos_overall;coll_pos];
+    coll_pos_overall = [coll_pos_overall; coll_pos];
     %% stick somewhere here the static obstacles code
-    %[obstacle_matrix] = static_obstacles(dimension);
+    [obstacle_matrix] = static_obstacles(dimension);
     
 end
 
