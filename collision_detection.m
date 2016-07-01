@@ -20,7 +20,7 @@ centres = [d/2 0; d+d/2 0; 2*d+d/2 0] - [(dimension(2) - dimension(3))/2*ones(3,
 
 %transformation = [cosd(position(3)) -sind(position(3)) position(1); sind(position(3)) cosd(position(3)) position(2); 0 0 1]*[ centres'; ones(1,3)];
 transformation_x = cos(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,1)',size(traj,2),1)-sin(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,2)',size(traj,2),1) + repmat(traj(1,:)',1,no_of_circles);
-  transformation_y =   sin(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,1)',size(traj,2),1)-cos(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,2)',size(traj,2),1) + repmat(traj(2,:)',1,no_of_circles);
+transformation_y =   sin(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,1)',size(traj,2),1)-cos(repmat(traj(3,:)',1,no_of_circles)).*repmat(centres(:,2)',size(traj,2),1) + repmat(traj(2,:)',1,no_of_circles);
 transformation = [transformation_x(:)' ; transformation_y(:)' ];
 % circle1 = [radius.*cos(theta) + transformation(1,1);radius.*sin(theta) + transformation(2,1)  ];
 % circle2 = [radius.*cos(theta) + transformation(1,2);radius.*sin(theta) + transformation(2,2)  ];
