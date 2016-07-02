@@ -50,23 +50,23 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
                 %                         end
                 x(1) = start_pose(1);
                 y(1) = start_pose(2);
-                x(2:end)= integral_par_group_quart(0,[a;b;c;d;e],s(2:end),0,1, start_pose(3)) + x(1);
-                y(2:end)= integral_par_group_quart(0,[a;b;c;d;e],s(2:end),1,1, start_pose(3))+ y(1);
+                x(2:end) = integral_par_group_quart(0,[a;b;c;d;e],s(2:end),0,1, start_pose(3)) + x(1);
+                y(2:end) = integral_par_group_quart(0,[a;b;c;d;e],s(2:end),1,1, start_pose(3))+ y(1);
                 theta = quartic_theta([a;b;c;d;e],s,1,start_pose(3));
-                curvature=curvature_comp_quart([a;b;c;d;e],s,1);
-                curvature_dot= curvature_dot_comp_quart([a;b;c;d;e],s,1,vel_prof);
+                curvature = curvature_comp_quart([a;b;c;d;e],s,1);
+                curvature_dot = curvature_dot_comp_quart([a;b;c;d;e],s,1,vel_prof);
                 sample_traj_points = [x; y ;theta;curvature;curvature_dot; vel_prof;acc; jerk; T*ones(1,length(jerk))];
                 %trajectory_cost = total_cost(sample_traj_points,centre_line_seg,param(end), dimension);
-                children =full_set(:,1:7,next_lateral);
+                children = full_set(:,1:7,next_lateral);
                 
                 
                 %trajectory_cost= total_cost_r1(sample_traj_points,centre_line_seg,param(end), dimension,children);
                 trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
                 
                 if (backtrack_cost(next_lateral,1,next_vel))>(0 + trajectory_cost)
-                    backtrack_cost(next_lateral,1,next_vel)= 0+ trajectory_cost;
+                    backtrack_cost(next_lateral,1,next_vel) = 0+ trajectory_cost;
                     
-                    backtrack_state(next_lateral,1,next_vel,:) =[1 vel];
+                    backtrack_state(next_lateral,1,next_vel,:) = [1 vel];
                     
                     
                 end
@@ -99,32 +99,29 @@ for station = 1: length(full_set)/7
         if(sum(lateral == comp_check)==0)
             
             for next_lateral = (n_path-n_path_vec(station+1))/2 + 1 : n_path_vec(station+1) + (n_path-n_path_vec(station+1))/2
-                if(full_set(next_lateral,(station-1)*7 +7,lateral)< 0.5)&&((sum(abs(full_set(next_lateral,(station-1)*7 +1:(station-1)*7 +4,lateral))>max_curv))==0)
+                if(full_set(next_lateral,(station-1)*7 +7,lateral) < 0.5)&&((sum(abs(full_set(next_lateral,(station-1)*7 +1:(station-1)*7 +4,lateral))>max_curv))==0)
                     param = full_set(next_lateral,(station-1)*7 +1:(station-1)*7 +5,lateral);
-                    a=param(1);
+                    a = param(1);
                     b = -(11*param(1) -18*param(2) +9*param(3) -2*param(4))/(2*param(end));
                     c = 9*(2*param(1) - 5*param(2) + 4*param(3) - param(4))/(2*param(end)^2);
                     d = -9*(param(1) -3*param(2) + 3*param(3) -param(4))/(2*param(end)^3);
                     
-                    x(1) = position_x(lateral,station);
+                    x(1) = position_x(lateral,station); 
                     y(1) = position_y(lateral,station);
                     x(2:end)= integral_par_group(0,[a;b;c;d],param(end)/sub_sample:param(end)/sub_sample:param(end),0,1, theta_ini(lateral,station)) + position_x(lateral,station);
                     y(2:end)= integral_par_group(0,[a;b;c;d],param(end)/sub_sample:param(end)/sub_sample:param(end),1,1, theta_ini(lateral,station))+ position_y(lateral,station);
                     theta = cubic_theta([a;b;c;d],0:param(end)/sub_sample:param(end),1,theta_ini(lateral,station));
                     if (station == length(full_set)/7)
                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
+                         static_obstacles(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
 
                     else
-                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
+                         [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
                     end
                     if(no_of_coll==0)
                         for vel = 1:length(velocities)
-                            
                             %for next_vel = 1:length(velocities)
                             for next_vel = max([vel-2 1]):min([vel+2 length(velocities)])
-                                
-                                
-                                
                                 [s,T, acc, jerk, vel_prof] = velgen(velocities(vel),velocities(next_vel),0,0,param(5),sub_sample);
                                 %traj point format [x;y;theta;curvature;curvature';speed;acceleration;jerk; time]
                                 %                         for position=1: length(s)-1
@@ -153,8 +150,6 @@ for station = 1: length(full_set)/7
                                     backtrack_cost(next_lateral,station+1,next_vel)= backtrack_cost(lateral,station,vel)+ trajectory_cost;
                                     
                                     backtrack_state(next_lateral,station+1,next_vel,:) =[lateral vel];
-                                    
-                                    
                                 end
                             end
                         end
@@ -230,7 +225,7 @@ else
     for search =  size(backtrack_cost,2):-1:1
         
         optimal_path(2,search) = backtrack_state(index(1),search,index(2),1); %prev_node
-        optimal_path(3,search) = backtrack_state(index(1),search,index(2),2);%current_vel_vf
+        optimal_path(3,search) = backtrack_state(index(1),search,index(2),2); %current_vel_vf
         if(search == 1)
             optimal_path(1,search) = 0;
         else
