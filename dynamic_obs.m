@@ -35,9 +35,9 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
         x(2:end)= integral_par_group_quart(0,[a;b;c;d;e],param(end)/sub_sample:param(end)/sub_sample:param(end),0,1, start_pose(3)) + x(1);
         y(2:end)= integral_par_group_quart(0,[a;b;c;d;e],param(end)/sub_sample:param(end)/sub_sample:param(end),1,1, start_pose(3))+ y(1);
         theta = quartic_theta([a;b;c;d;e],0:param(end)/sub_sample:param(end),1,start_pose(3));
-        [no_of_coll, positions] = collision_detection(obstacles(:,1:sub_sample+1),[x;y;theta], dimension);
+%         [no_of_coll, positions] = collision_detection(obstacles(:,1:sub_sample+1),[x;y;theta], dimension);
         %% my DUMMY static obstacle code
-        [no_of_coll, positions] = static_obstacles(obstacles(:,1:sub_sample+1),[x;y;theta], dimension;
+        [no_of_coll, positions] = static_obstacles(obstacles(:,1:sub_sample+1),[x;y;theta], dimension);
         if(no_of_coll==0)
             for next_vel = 1:length(velocities)
                 
@@ -114,13 +114,13 @@ for station = 1: length(full_set)/7
                     y(2:end)= integral_par_group(0,[a;b;c;d],param(end)/sub_sample:param(end)/sub_sample:param(end),1,1, theta_ini(lateral,station))+ position_y(lateral,station);
                     theta = cubic_theta([a;b;c;d],0:param(end)/sub_sample:param(end),1,theta_ini(lateral,station));
                     if (station == length(full_set)/7)% if the last section
-                         [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
+%                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
                         
                          %% my DUMMY static obstacle code
                          [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
 
                     else % if not the last section
-                         [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
+%                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
                          
                          %% my DUMMY static obstacle code
                          [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
