@@ -16,9 +16,12 @@ draw = 1;
 
 sub_centre_line = prior_info.prior_centre_line;
 
-lateral_dist = 0.75;
+%%%%%%  change lateral distance to adjust the width of the lattice %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lateral_dist = 1.5;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n_path_vec = add_variance_con(sub_centre_line(:,2:end),lateral_dist,5);
+n_path_vec = add_variance_con(sub_centre_line(:,2:end),lateral_dist,n_path); % instead of n_path should be 5
 %n_path_vec = n_path;
 n_path = max(n_path_vec);
 
@@ -174,6 +177,13 @@ for i = (n_path-n_path_vec(1))/2 + 1:n_path_vec(1) + (n_path-n_path_vec(1))/2
     end
 end
 
+
+%% define the pose of the obstacle 1
+car_pose = [ -1 23 90; 2 40 90];
+% draw the car obstacle 
+for i = 1:length(car_pose(:,1))
+    draw_car_obstacle(dimension, car_pose(i,:));
+end
 
 
 %define minimum velocity

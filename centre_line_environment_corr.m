@@ -1,4 +1,4 @@
-function [static_obstacle_matrix, line_matrix_out ,centre_step_fine] =  centre_line_environment_corr(round_config, start,final)
+function [static_obstacle_matrix, line_matrix_out ,centre_step_fine] =  centre_line_environment_corr(road_config, start,final)
 
 
 
@@ -8,8 +8,8 @@ centre_step_fine= single(total_dist/round(total_dist/0.5));
 
 steps  = total_dist/ centre_step_fine;
 % discretisation of the obstacles
-line_obs_x_left = repmat(-4,1,steps);
-line_obs_x_right = repmat(4,1,steps);
+line_obs_x_left = repmat(-road_config.lane_width/2,1,steps);
+line_obs_x_right = repmat(road_config.lane_width/2,1,steps);
 line_obs_y_left = zeros(1,steps);
 line_obs_y_right = zeros(1,steps);
 line_obs_y_left(1) = start.distance;

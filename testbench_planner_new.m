@@ -16,18 +16,18 @@ result_table= inf(44,4);%44%77
 
 %% prior road configurations
 road.lane_numbers = 1; % ask if it is a lane number or numbers???
-road.lane_width = 8;
+road.lane_width = 16;
 %area= 60;   why would I need this parameter???
 
 
 %vehicle start pose
 start_pose = [ 0; 4;110/180*pi; 0; 0 ; 8;0];  % 
 % separation between sampled states
-station = 10;
+station = 14;
 
 start.distance = 10; % distance from the end of the road???
 
-final.distance = 62; % probably distance from the end of the road too.. ???
+final.distance = 72; % probably distance from the end of the road too.. ???
 
 
 %distance to simulate centreline and roundabout features after exit start
@@ -77,7 +77,7 @@ prior_uncertainty = sub_centre_line;
 prior_info.prior_centre_line= sub_centre_line;
 prior_info.variance= prior_uncertainty;
 %define number of lateral shifts
-n_path = 5;% this has to be odd
+n_path = 7;% this has to be odd
 inc = 0;
 %create various roundabout configurations
 

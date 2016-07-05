@@ -5,9 +5,10 @@ function [no_of_coll, positions] = static_obstacles(obstacles,traj, dimension)
 %% define the pose of the obstacle 1
 position = [ -1 23 90];
 
-%% draw the car obstacle
-draw_car(dimension, position)
-
+%% draw the car obstacle if it is within the station
+if min(traj(2,:) <= position(2) && max(traj(2,:) >= position(2)))
+    draw_car_obstacle(dimension, position)
+end
 %% get the coordinates of the car
 rectangle = [ 0 0; dimension(2) 0; dimension(2) dimension(1); 0 dimension(1)]- [(dimension(2) - dimension(3))/2*ones(4,1) dimension(1)/2*ones(4,1) ];
 front = [(dimension(2) + dimension(3))/2 0];
@@ -46,23 +47,24 @@ trajMat = sparse(sparseSize,sparseSize);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% create a sparse matrix of car obstacle
-carMat = sparse(sparseSize,sparseSize);
-
 % create a meshgrid of the car coordinates
 [X, Y] = meshgrid(obstacle_matrix(1,1):0.5:obstacle_matrix(3,1),obstacle_matrix(2,1):0.5:obstacle_matrix(2,2));
 
 
-%% path collision detection
-carMat( round(scalingFactor * Y), round(sparseSize / 2 + scalingFactor * X)) = 1; % there is no need for that function as it
+%% add the car obstacle to the obstacle matrix
 curbMat( round(scalingFactor * Y), round(sparseSize / 2 + scalingFactor * X)) = 1;
 
 
 %% define the pose of the obstacle 2
-position = [ 1 35 90];
+position = [ 2 40 90];
+
+%% draw the car obstacle if it is within the station
+if min(traj(2,:) <= position(2) && max(traj(2,:) >= position(2)))
+    draw_car_obstacle(dimension, position)
+end
 
 %% draw the car obstacle
-draw_car(dimension, position)
+draw_car_obstacle(dimension, position)
 [X, Y] = meshgrid(obstacle_matrix(1,1):0.5:obstacle_matrix(3,1),obstacle_matrix(2,1):0.5:obstacle_matrix(2,2));
 curbMat( round(scalingFactor * Y), round(sparseSize / 2 + scalingFactor * X)) = 1;
 
