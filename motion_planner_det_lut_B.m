@@ -10,7 +10,7 @@ lut = initial_guess.pos;
 lut_neg_double = initial_guess.neg_double;
 
 sub_sample = spacing_param.sub_sample ;
-  station_new =     spacing_param.station ;
+station_new = spacing_param.station ;
 
 draw = 1;
 
@@ -18,7 +18,7 @@ sub_centre_line = prior_info.prior_centre_line;
 
 %%%%%%  change lateral distance to adjust the width of the lattice %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-lateral_dist = 1.5;
+lateral_dist = 1 ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 n_path_vec = add_variance_con(sub_centre_line(:,2:end),lateral_dist,n_path); % instead of n_path should be 5
@@ -47,7 +47,7 @@ for j = 1: size(position_x,2)-1
             %way initial guess table was contructed
             deltay = (position_y(i,j + 1)-position_y(k,j));
             theta_rot = orientation(k,j)*-1;
-            deltay = (position_x(i, j +1 )-position_x(k,j))*sin(theta_rot) + deltay*cos(theta_rot);
+            deltay = (position_x(i, j+1 )-position_x(k,j))*sin(theta_rot) + deltay*cos(theta_rot);
             %find the position in the LUT by dividing by the spacing used
             %to create LUT
             deltay = round((deltay/0.75));
@@ -121,6 +121,7 @@ for j = 1: size(position_x,2)-1
             
             param_matrix(i,(j-1)*7 +1 :(j-1)*7 +7, k) = [parameters' counter index];
             kinematics = (sum(abs(parameters(1:4))>max_curv))*1000000000000;
+            %%%%%% what this condition meand
             if(draw)&&(index<0.5)&&(kinematics<1)
                 if(parameters(end)>12.3)
                     checking = 1;
