@@ -1,4 +1,4 @@
-function [static_obstacle_matrix, line_matrix_out ,centre_step_fine] =  centre_line_environment_corr(round_config, start,final)
+function [static_obstacle_matrix, line_matrix_out ,centre_step_fine] =  centre_line_environment_corr(road_config, start,final)
 
 
 
@@ -8,8 +8,8 @@ centre_step_fine= single(total_dist/round(total_dist/0.5));
 
 steps  = total_dist/ centre_step_fine;
 % discretisation of the obstacles
-line_obs_x_left = repmat(-4,1,steps);
-line_obs_x_right = repmat(4,1,steps);
+line_obs_x_left = repmat(-road_config.lane_width/2,1,steps);
+line_obs_x_right = repmat(road_config.lane_width/2,1,steps);
 line_obs_y_left = zeros(1,steps);
 line_obs_y_right = zeros(1,steps);
 line_obs_y_left(1) = start.distance;
@@ -22,6 +22,17 @@ end
 
 static_obstacle_matrix = [line_obs_x_left;line_obs_y_left;line_obs_x_right;line_obs_y_right];
 
+
+
+%% dummy code test for the obstacles
+% for i = 1:size(static_obstacle_matrix,2)
+%     if static_obstacle_matrix(2,i) == 20 
+%         static_obstacle_matrix(1,i) = -0.5;
+%     end
+%     if static_obstacle_matrix(2,i) == 30
+%         static_obstacle_matrix(3,i) = 0.7;
+%     end
+% end
 
 
 % because it is straight line y for left and right are the same

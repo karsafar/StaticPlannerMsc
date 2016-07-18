@@ -8,7 +8,7 @@ position_y = lattice.y;
 orientation = lattice.theta;
 curvature = lattice.curve;
 param_matrix = lattice.param ;
-v_vec=lattice.vel ;
+v_vec = lattice.vel ;
 
 %draw optimal
 time_acc = 0;
@@ -65,9 +65,11 @@ else
     path_x =(integral_par_quartic(0,[param_abcde;s(1)],0,1,start_pose(3)) + start_pose(1));
     path_y= (integral_par_quartic(0,[param_abcde;s(1)],1,1,start_pose(3)) + start_pose(2));
 end
+%draw car per section
     draw_car(dimension,[path_x(1) path_y(1) theta(1)/pi*180])
 
 if(draw_car_flag)
+    %draw car per section
     draw_car(dimension,[path_x path_y theta(1)/pi*180])
 end
 for j = 2: length(s)
@@ -76,6 +78,7 @@ for j = 2: length(s)
     path_x = [path_x x1];
     path_y = [ path_y y1];
     if(draw_car_flag)
+        % draw car per section
         draw_car(dimension,[ x1 y1 theta(j)*180/pi])
     end
 end
@@ -141,6 +144,7 @@ for i = 2: length(optimal_par)-1
                     draw_car(dimension,[startpoint(1) startpoint(2) theta(1)/pi*180])
 
         if(draw_car_flag)
+            %draw a car per section
             draw_car(dimension,[test testy theta(1)/pi*180])
         end
         for j = 2: length(s)
@@ -150,6 +154,7 @@ for i = 2: length(optimal_par)-1
             path_x = [path_x x1];
             path_y = [path_y y1];
             if(draw_car_flag)
+                % draw car per section
                 draw_car(dimension,[ x1 y1 theta(j)*180/pi])
             end
         end

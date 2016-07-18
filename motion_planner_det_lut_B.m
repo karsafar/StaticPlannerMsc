@@ -10,15 +10,18 @@ lut = initial_guess.pos;
 lut_neg_double = initial_guess.neg_double;
 
 sub_sample = spacing_param.sub_sample ;
-  station_new =     spacing_param.station ;
+station_new = spacing_param.station ;
 
 draw = 1;
 
 sub_centre_line = prior_info.prior_centre_line;
 
-lateral_dist = 0.75;
+%%%%%%  change lateral distance to adjust the width of the lattice %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lateral_dist = 1 ;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-n_path_vec = add_variance_con(sub_centre_line(:,2:end),lateral_dist,5);
+n_path_vec = add_variance_con(sub_centre_line(:,2:end),lateral_dist,n_path); % instead of n_path should be 5
 %n_path_vec = n_path;
 n_path = max(n_path_vec);
 
@@ -44,7 +47,7 @@ for j = 1: size(position_x,2)-1
             %way initial guess table was contructed
             deltay = (position_y(i,j + 1)-position_y(k,j));
             theta_rot = orientation(k,j)*-1;
-            deltay = (position_x(i, j +1 )-position_x(k,j))*sin(theta_rot) + deltay*cos(theta_rot);
+            deltay = (position_x(i, j+1 )-position_x(k,j))*sin(theta_rot) + deltay*cos(theta_rot);
             %find the position in the LUT by dividing by the spacing used
             %to create LUT
             deltay = round((deltay/0.75));
@@ -118,6 +121,7 @@ for j = 1: size(position_x,2)-1
             
             param_matrix(i,(j-1)*7 +1 :(j-1)*7 +7, k) = [parameters' counter index];
             kinematics = (sum(abs(parameters(1:4))>max_curv))*1000000000000;
+            %%%%%% what this condition meand
             if(draw)&&(index<0.5)&&(kinematics<1)
                 if(parameters(end)>12.3)
                     checking = 1;
@@ -127,9 +131,9 @@ for j = 1: size(position_x,2)-1
                 distance = [distance; parameters(end)];
                 hold on
                 h = plot(x,y,'LineWidth',1.5);
-               % axis([-10 10 -10 250]);
+                % axis([-10 10 -10 250]);
                 axis equal
-                 set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+                set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
             end
         end
     end
@@ -162,18 +166,25 @@ for i = (n_path-n_path_vec(1))/2 + 1:n_path_vec(1) + (n_path-n_path_vec(1))/2
     if(draw)&&(index<1)&&(kinematics<1)
     [x, y]= drawtrajec_abcde(parameters,[start_pose(1:4)],endpoint,20);
     hold on
-    h = plot(x,y,'-*g','LineWidth',1.5)
+    h = plot(x,y,'-g','LineWidth',1.5);
     set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off')
 
     end
     if(draw)&&(index<1)&&(kinematics>1)
     [x, y]= drawtrajec_abcde(parameters,[start_pose(1:4)],endpoint,20);
     hold on
-    h = plot(x,y,'-*k','LineWidth',1.5)
+    h = plot(x,y,'-*k','LineWidth',1.5);
     set(get(get(h,'Annotation'),'LegendInformation'),'IconDisplayStyle','off')
     end
 end
 
+
+%% define the pose of the obstacle 1
+car_pose = [ -1 23 90; 2 40 90];
+% draw the car obstacle 
+for i = 1:length(car_pose(:,1))
+    draw_car_obstacle(dimension, car_pose(i,:));
+end
 
 
 %define minimum velocity
@@ -201,13 +212,13 @@ lattice.sample = sub_sample;
 %draw_car(dimension,[start_pose(1) start_pose(2) start_pose(3)/pi*180])
 %[ optimal_par] = dynamic07082015(param_matrix_start,start_pose,param_matrix,v_vec,centre_line,dimension, sub_sample,position_x,position_y,orientation, n_path_vec);
 [ optimal_par] = dynamic_eff(param_matrix_start,start_pose,param_matrix,v_vec,dimension, sub_sample,position_x,position_y,orientation, n_path_vec);
-no_coll = check_path(optimal_par,static_obstacle_matrix, lattice, start_car);
-if(no_coll>0)
-[ optimal_par] = dynamic_obs(param_matrix_start,start_pose,param_matrix,v_vec,dimension, sub_sample,position_x,position_y,orientation,n_path_vec,static_obstacle_matrix);
+no_coll = check_path(optimal_par, static_obstacle_matrix, lattice, start_car);
+if (no_coll > 0)
+    [ optimal_par] = dynamic_obs(param_matrix_start, start_pose, param_matrix, v_vec, dimension, sub_sample, position_x, position_y, orientation, n_path_vec, static_obstacle_matrix);
 end
  
 draw_path = 1;
-draw_car_flag =0;
+draw_car_flag = 0;
 draw_optimal_path(optimal_par,start_car,lattice, draw_car_flag, draw_path)
 
 
@@ -300,7 +311,7 @@ weights = [ 1; 1; 100];
 scale = 1;
 
 %converting between parameters from p1, p2, p3,p4 to a b c d
-a=param_old(1);
+a = param_old(1);
 b = -(11*param_old(1) -18*param_old(2) +9*param_old(3) -2*param_old(4))/(2*param_old(end));
 c = 9*(2*param_old(1) - 5*param_old(2) + 4*param_old(3) - param_old(4))/(2*param_old(end)^2);
 d = -9*(param_old(1) -3*param_old(2) + 3*param_old(3) -param_old(4))/(2*param_old(end)^3);
