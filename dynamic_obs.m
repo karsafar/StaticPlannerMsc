@@ -1,4 +1,4 @@
-function [ optimal_path] = dynamic_obs(param_matrix_start,start_pose, full_set,velocities, dimension,sub_sample,position_x,position_y,theta_ini,n_path_vec,obstacles)
+function [ optimal_path] = dynamic_obs(param_matrix_start,start_pose, full_set,velocities, dimension,sub_sample,position_x,position_y,theta_ini,n_path_vec,obstacles, car_pose)
 max_curv =1/3.8;
 n_path = size(full_set,1);
 
@@ -37,7 +37,7 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
         theta = quartic_theta([a;b;c;d;e],0:param(end)/sub_sample:param(end),1,start_pose(3));
 %         [no_of_coll, positions] = collision_detection(obstacles(:,1:sub_sample+1),[x;y;theta], dimension);
         %% my DUMMY static obstacle code
-        [no_of_coll, positions] = static_obstacles(obstacles(:,1:sub_sample+1),[x;y;theta], dimension);
+        [no_of_coll, positions] = static_obstacles(obstacles(:,1:sub_sample+1),[x;y;theta], dimension, car_pose);
         if(no_of_coll==0)
             for next_vel = 1:length(velocities)
                 
@@ -117,13 +117,13 @@ for station = 1: length(full_set)/7
 %                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
                         
                          %% my DUMMY static obstacle code
-                         [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
+                         [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension, car_pose);
 
                     else % if not the last section
 %                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
                          
                          %% my DUMMY static obstacle code
-                         [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
+                         [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension,car_pose);
 
                     end
                     if(no_of_coll==0)

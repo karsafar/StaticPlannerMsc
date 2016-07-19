@@ -16,6 +16,7 @@ result_table= inf(44,4);%44%77
 
 %% prior road configurations
 road.lane_numbers = 1; % ask if it is a lane number or numbers???
+
 road.lane_width = 10;
 %area= 60;   why would I need this parameter???
 
@@ -25,7 +26,7 @@ start_pose = [ 0; 4;110/180*pi; 0; 0 ; 4;0];  %
 % separation between sampled states
 station = 8;
 
-start.distance = 10; % distance from the end of the road???
+start.distance = 12; % distance from the end of the road???
 
 final.distance = 52; % probably distance from the end of the road too.. ???
 
@@ -121,5 +122,6 @@ round_configurations = cat(3,orientation_exit,orientation_road);
     %% lattice generation
     optimal_path = motion_planner_det_lut_B(prior_info,dimension, start_pose,...
         parameters, static_obstacle_matrix_real, initial_guess_table,n_path);
+    
 
 end
