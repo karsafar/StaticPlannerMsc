@@ -22,13 +22,13 @@ road.lane_width = 10;
 
 
 %vehicle start pose
-start_pose = [ 0; 4;110/180*pi; 0; 0 ; 4;0];  % 
+start_pose = [ 0; 4; 110/180*pi; 0; 0 ; 4;0];  % 
 % separation between sampled states
 station = 8;
 
 start.distance = 12; % distance from the end of the road???
 
-final.distance = 52; % probably distance from the end of the road too.. ???
+final.distance = 42; % probably distance from the end of the road too.. ???
 
 
 %distance to simulate centreline and roundabout features after exit start

@@ -35,7 +35,7 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
         x(2:end)= integral_par_group_quart(0,[a;b;c;d;e],param(end)/sub_sample:param(end)/sub_sample:param(end),0,1, start_pose(3)) + x(1);
         y(2:end)= integral_par_group_quart(0,[a;b;c;d;e],param(end)/sub_sample:param(end)/sub_sample:param(end),1,1, start_pose(3))+ y(1);
         theta = quartic_theta([a;b;c;d;e],0:param(end)/sub_sample:param(end),1,start_pose(3));
-%         [no_of_coll, positions] = collision_detection(obstacles(:,1:sub_sample+1),[x;y;theta], dimension);
+        %         [no_of_coll, positions] = collision_detection(obstacles(:,1:sub_sample+1),[x;y;theta], dimension);
         %% my DUMMY static obstacle code
         [no_of_coll, positions] = static_obstacles(obstacles(:,1:sub_sample+1),[x;y;theta], dimension, car_pose);
         if(no_of_coll==0)
@@ -63,7 +63,16 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
                 
                 
                 %trajectory_cost= total_cost_r1(sample_traj_points,centre_line_seg,param(end), dimension,children);
-                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
+                if next_lateral < 5
+                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 500;
+                elseif next_lateral == 5
+                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 300;
+                elseif next_lateral == 6
+                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 200;
+                elseif next_lateral == 7
+                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
+                end
+                
                 
                 if (backtrack_cost(next_lateral,1,next_vel))>(0 + trajectory_cost)
                     backtrack_cost(next_lateral,1,next_vel) = 0+ trajectory_cost;
@@ -92,7 +101,7 @@ comp_check = number_array(logical(feas_check));
 %vel_check = zeros(size(backtrack,2),1);
 
 for station = 1: length(full_set)/7
-  
+    
     
     
     
@@ -108,23 +117,23 @@ for station = 1: length(full_set)/7
                     c = 9*(2*param(1) - 5*param(2) + 4*param(3) - param(4))/(2*param(end)^2);
                     d = -9*(param(1) -3*param(2) + 3*param(3) -param(4))/(2*param(end)^3);
                     
-                    x(1) = position_x(lateral,station); 
+                    x(1) = position_x(lateral,station);
                     y(1) = position_y(lateral,station);
                     x(2:end)= integral_par_group(0,[a;b;c;d],param(end)/sub_sample:param(end)/sub_sample:param(end),0,1, theta_ini(lateral,station)) + position_x(lateral,station);
                     y(2:end)= integral_par_group(0,[a;b;c;d],param(end)/sub_sample:param(end)/sub_sample:param(end),1,1, theta_ini(lateral,station))+ position_y(lateral,station);
                     theta = cubic_theta([a;b;c;d],0:param(end)/sub_sample:param(end),1,theta_ini(lateral,station));
                     if (station == length(full_set)/7)% if the last section
-%                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
+                        %                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension);
                         
-                         %% my DUMMY static obstacle code
-                         [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension, car_pose);
-
+                        %% my DUMMY static obstacle code
+                        [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:end),[x;y;theta], dimension, car_pose);
+                        
                     else % if not the last section
-%                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
-                         
-                         %% my DUMMY static obstacle code
-                         [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension,car_pose);
-
+                        %                          [no_of_coll, positions] = collision_detection(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension);
+                        
+                        %% my DUMMY static obstacle code
+                        [no_of_coll, positions] = static_obstacles(obstacles(:,(station)*sub_sample+1:(station)*sub_sample+1 +sub_sample +1),[x;y;theta], dimension,car_pose);
+                        
                     end
                     if(no_of_coll==0)
                         for vel = 1:length(velocities)
@@ -152,7 +161,15 @@ for station = 1: length(full_set)/7
                                 end
                                 
                                 %trajectory_cost= total_cost_r1(sample_traj_points,centre_line_seg,param(end), dimension,children);
-                                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
+                                if next_lateral < 5
+                                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 500;
+                                elseif next_lateral == 5
+                                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 300;
+                                elseif next_lateral == 6
+                                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 200;
+                                elseif next_lateral == 7
+                                    trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
+                                end
                                 
                                 if (backtrack_cost(next_lateral,station+1,next_vel))> (backtrack_cost(lateral,station,vel) + trajectory_cost)
                                     backtrack_cost(next_lateral,station+1,next_vel)= backtrack_cost(lateral,station,vel)+ trajectory_cost;
@@ -181,7 +198,7 @@ if(isinf(optimal_path(1,end)))
     dec = 1;
     while( isinf(min(min(backtrack_cost(:,end-dec,:)))))
         [optimal_path(1,length(full_set)/7 +2-dec),index(2)] = min(min(backtrack_cost(:,end-dec,:)));%cost
-
+        
         dec = dec + 1;
     end
     [optimal_path(1,length(full_set)/7 +2-dec),index(2)] = min(min(backtrack_cost(:,end-dec,:)));%cost

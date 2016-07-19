@@ -64,7 +64,15 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
             
             
             %trajectory_cost= total_cost_r(sample_traj_points,centre_line_seg,param(end), dimension,children);
-            trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
+            if next_lateral < 5
+                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 500;
+            elseif next_lateral == 5
+                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 300;
+            elseif next_lateral == 6
+                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 200;
+            elseif next_lateral == 7
+                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
+            end
             if (backtrack_cost(next_lateral,1,next_vel)> 0 + trajectory_cost)
                 backtrack_cost(next_lateral,1,next_vel)= 0+ trajectory_cost;
                 
@@ -76,9 +84,9 @@ for next_lateral = (n_path-n_path_vec(1))/2 + 1 : n_path_vec(1) + (n_path-n_path
     end
     if(sum(isinf(backtrack_cost(next_lateral,1,:))|backtrack_cost(next_lateral,1,:)>=1000000000000) ==length(velocities))
         feas_check(next_lateral)=  feas_check(next_lateral)+1;
-%     else
-%         feas_check_vel(next_lateral,:) = reshape(isinf(backtrack_cost(next_lateral,1,:))|backtrack_cost(next_lateral,1,:)>=1000000000000,1,length(velocities));
-%         comp_check_vel(next_lateral) = num2cell(number_array(logical(feas_check_vel(next_lateral,:))),2);
+        %     else
+        %         feas_check_vel(next_lateral,:) = reshape(isinf(backtrack_cost(next_lateral,1,:))|backtrack_cost(next_lateral,1,:)>=1000000000000,1,length(velocities));
+        %         comp_check_vel(next_lateral) = num2cell(number_array(logical(feas_check_vel(next_lateral,:))),2);
     end
 end
 
@@ -108,48 +116,56 @@ for station = 1: length(full_set)/7
                     d = -9*(param(1) -3*param(2) + 3*param(3) -param(4))/(2*param(end)^3);
                     
                     for vel = 1:length(velocities)
-                       % if(sum(vel == comp_check_vel{lateral})==0)
-                           % for next_vel = 1:length(velocities)
-                             for next_vel = max([vel-2 1]):min([vel+2 length(velocities)])   
-                                
-                                
-                                
-                                [s,T, acc, jerk, vel_prof] = velgen(velocities(vel),velocities(next_vel),0,0,param(5),sub_sample);
-                                %traj point format [x;y;theta;curvature;curvature';speed;acceleration;jerk; time]
-                                %                         for position=1: length(s)-1
-                                %                             x(position+1)= integral_par(0,[a;b;c;d; s(position +1)],0,1, theta_ini(lateral,station)) + position_x(lateral,station);
-                                %                             y(position+1) =integral_par(0,[a;b;c;d;s(position +1)],1,1, theta_ini(lateral,station))+ position_y(lateral,station);
-                                %                         end
-                                x(1) = position_x(lateral,station);
-                                y(1) = position_y(lateral,station);
-                                if(isempty(s(2:end)))
-                                    stoppp = 1;
-                                end
-                                x(2:end)= integral_par_group(0,[a;b;c;d],s(2:end),0,1, theta_ini(lateral,station)) + position_x(lateral,station);
-                                y(2:end)= integral_par_group(0,[a;b;c;d],s(2:end),1,1, theta_ini(lateral,station))+ position_y(lateral,station);
-                                theta = cubic_theta([a;b;c;d],s,1,theta_ini(lateral,station));
-                                curvature=curvature_comp([a;b;c;d],s,1);
-                                curvature_dot= curvature_dot_comp([a;b;c;d],s,1,vel_prof);
-                                sample_traj_points = [x; y ;theta;curvature;curvature_dot; vel_prof;acc; jerk; T*ones(1,length(jerk))];
-                                %trajectory_cost = total_cost(sample_traj_points,centre_line_seg,param(end), dimension);
-                                if(station ==  length(full_set)/7)
-                                    children =[];
-                                else
-                                    children =full_set(:,(station)*7 +1:(station)*7 +7,next_lateral);
-                                end
-                                
-                                %trajectory_cost= total_cost_r(sample_traj_points,centre_line_seg,param(end), dimension,children);
-                                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
-                                
-                                if (backtrack_cost(next_lateral,station+1,next_vel)> backtrack_cost(lateral,station,vel) + trajectory_cost)
-                                    backtrack_cost(next_lateral,station+1,next_vel)= backtrack_cost(lateral,station,vel)+ trajectory_cost;
-                                    
-                                    backtrack_state(next_lateral,station+1,next_vel,:) =[lateral vel];
-                                    
-                                    
-                                end
+                        % if(sum(vel == comp_check_vel{lateral})==0)
+                        % for next_vel = 1:length(velocities)
+                        for next_vel = max([vel-2 1]):min([vel+2 length(velocities)])
+                            
+                            
+                            
+                            [s,T, acc, jerk, vel_prof] = velgen(velocities(vel),velocities(next_vel),0,0,param(5),sub_sample);
+                            %traj point format [x;y;theta;curvature;curvature';speed;acceleration;jerk; time]
+                            %                         for position=1: length(s)-1
+                            %                             x(position+1)= integral_par(0,[a;b;c;d; s(position +1)],0,1, theta_ini(lateral,station)) + position_x(lateral,station);
+                            %                             y(position+1) =integral_par(0,[a;b;c;d;s(position +1)],1,1, theta_ini(lateral,station))+ position_y(lateral,station);
+                            %                         end
+                            x(1) = position_x(lateral,station);
+                            y(1) = position_y(lateral,station);
+                            if(isempty(s(2:end)))
+                                stoppp = 1;
                             end
-                       % end
+                            x(2:end)= integral_par_group(0,[a;b;c;d],s(2:end),0,1, theta_ini(lateral,station)) + position_x(lateral,station);
+                            y(2:end)= integral_par_group(0,[a;b;c;d],s(2:end),1,1, theta_ini(lateral,station))+ position_y(lateral,station);
+                            theta = cubic_theta([a;b;c;d],s,1,theta_ini(lateral,station));
+                            curvature=curvature_comp([a;b;c;d],s,1);
+                            curvature_dot= curvature_dot_comp([a;b;c;d],s,1,vel_prof);
+                            sample_traj_points = [x; y ;theta;curvature;curvature_dot; vel_prof;acc; jerk; T*ones(1,length(jerk))];
+                            %trajectory_cost = total_cost(sample_traj_points,centre_line_seg,param(end), dimension);
+                            if(station ==  length(full_set)/7)
+                                children =[];
+                            else
+                                children =full_set(:,(station)*7 +1:(station)*7 +7,next_lateral);
+                            end
+                            
+                            %trajectory_cost= total_cost_r(sample_traj_points,centre_line_seg,param(end), dimension,children);
+                            if next_lateral < 5
+                                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 500;
+                            elseif next_lateral == 5
+                                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 300;
+                            elseif next_lateral == 6
+                                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children) + 200;
+                            elseif next_lateral == 7
+                                trajectory_cost= total_cost_s(sample_traj_points,param(end), dimension,children);
+                            end
+                            
+                            if (backtrack_cost(next_lateral,station+1,next_vel)> backtrack_cost(lateral,station,vel) + trajectory_cost)
+                                backtrack_cost(next_lateral,station+1,next_vel)= backtrack_cost(lateral,station,vel)+ trajectory_cost;
+                                
+                                backtrack_state(next_lateral,station+1,next_vel,:) =[lateral vel];
+                                
+                                
+                            end
+                        end
+                        % end
                     end
                 end
                 %                 if(sum(isinf(backtrack_cost(next_lateral,station+1,:))|backtrack_cost(next_lateral,station+1,:)>=1000000000000) ==length(velocities))
@@ -167,12 +183,12 @@ for station = 1: length(full_set)/7
         no_more = 1;
         max_travel = station;
     end
-%      comp_check_not = number_array(~logical(feas_check));
-% 
-%     feas_check_vel(comp_check_not,:) = reshape(isinf(backtrack_cost(comp_check_not,station+1,:))|backtrack_cost(comp_check_not,station+1,:)>=1000000000000,length(comp_check_not),length(velocities));
-%     for loop = 1: n_path
-%     comp_check_vel(loop) = num2cell(number_array(logical(feas_check_vel(loop,:))),2);
-%     end
+    %      comp_check_not = number_array(~logical(feas_check));
+    %
+    %     feas_check_vel(comp_check_not,:) = reshape(isinf(backtrack_cost(comp_check_not,station+1,:))|backtrack_cost(comp_check_not,station+1,:)>=1000000000000,length(comp_check_not),length(velocities));
+    %     for loop = 1: n_path
+    %     comp_check_vel(loop) = num2cell(number_array(logical(feas_check_vel(loop,:))),2);
+    %     end
 end
 
 %find optimal

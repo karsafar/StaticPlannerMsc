@@ -4,7 +4,7 @@ function [static_obstacle_matrix, line_matrix_out ,centre_step_fine] =  centre_l
 
 total_dist = final.distance - start.distance; 
 
-centre_step_fine= single(total_dist/round(total_dist/0.1));
+centre_step_fine= single(total_dist/round(total_dist/0.2));
 
 steps  = total_dist/ centre_step_fine;
 % discretisation of the obstacles

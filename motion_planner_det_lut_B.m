@@ -180,7 +180,7 @@ for i = (n_path-n_path_vec(1))/2 + 1:n_path_vec(1) + (n_path-n_path_vec(1))/2
 end
 
 %% define the pose of the obstacle 1
-car_pose = [ -3 23 90; 0 43 90];% -1.5 55 90];
+car_pose = [ 3 23 90; -3 55 90];% -1.5 55 90];
 % draw the car obstacle 
 for i = 1:length(car_pose(:,1))
     draw_car_obstacle(dimension, car_pose(i,:));
