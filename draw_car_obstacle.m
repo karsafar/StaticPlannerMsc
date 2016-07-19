@@ -1,4 +1,4 @@
-function draw_car(dimension,position)
+function draw_car_obstacle(dimension,position)
 
 
 %      rectangle = [ 0 0; dimension(1) 0; dimension(1) dimension(2); 0 dimension(2)]- [dimension(1)/2*ones(4,1) dimension(2)/2*ones(4,1)];

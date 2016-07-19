@@ -18,6 +18,7 @@ sub_centre_line = prior_info.prior_centre_line;
 
 %%%%%%  change lateral distance to adjust the width of the lattice %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 lateral_dist = 1 ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -178,9 +179,8 @@ for i = (n_path-n_path_vec(1))/2 + 1:n_path_vec(1) + (n_path-n_path_vec(1))/2
     end
 end
 
-
 %% define the pose of the obstacle 1
-car_pose = [ -1 23 90; 2 40 90];
+car_pose = [ 3 23 90; -3 55 90];% -1.5 55 90];
 % draw the car obstacle 
 for i = 1:length(car_pose(:,1))
     draw_car_obstacle(dimension, car_pose(i,:));
@@ -212,9 +212,9 @@ lattice.sample = sub_sample;
 %draw_car(dimension,[start_pose(1) start_pose(2) start_pose(3)/pi*180])
 %[ optimal_par] = dynamic07082015(param_matrix_start,start_pose,param_matrix,v_vec,centre_line,dimension, sub_sample,position_x,position_y,orientation, n_path_vec);
 [ optimal_par] = dynamic_eff(param_matrix_start,start_pose,param_matrix,v_vec,dimension, sub_sample,position_x,position_y,orientation, n_path_vec);
-no_coll = check_path(optimal_par, static_obstacle_matrix, lattice, start_car);
+no_coll = check_path(optimal_par, static_obstacle_matrix, lattice, start_car, car_pose);
 if (no_coll > 0)
-    [ optimal_par] = dynamic_obs(param_matrix_start, start_pose, param_matrix, v_vec, dimension, sub_sample, position_x, position_y, orientation, n_path_vec, static_obstacle_matrix);
+    [ optimal_par] = dynamic_obs(param_matrix_start, start_pose, param_matrix, v_vec, dimension, sub_sample, position_x, position_y, orientation, n_path_vec, static_obstacle_matrix,car_pose);
 end
  
 draw_path = 1;

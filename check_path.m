@@ -1,4 +1,4 @@
-function no_coll = check_path(optimal,obstacles, lattice, start_car)
+function no_coll = check_path(optimal,obstacles, lattice, start_car, car_pose)
 
 
 startpose = start_car.start;
@@ -32,7 +32,7 @@ coll_pos_overall=[];
 %% collision check for the initial trajectories
 % [no_coll_sec, coll_pos] = collision_detection(obstacles(:,1:sub_sample+1),[x';y';theta], dimension);
 
-[no_coll_sec, coll_pos] = static_obstacles(obstacles(:,1:sub_sample+1),[x';y';theta], dimension);
+[no_coll_sec, coll_pos] = static_obstacles(obstacles(:,1:sub_sample+1),[x';y';theta], dimension,car_pose);
 
 no_coll_overall = [ no_coll_overall no_coll_sec];
 coll_pos_overall = [coll_pos_overall;coll_pos];
@@ -44,7 +44,7 @@ for i = 2: length(optimal)-1
 %     [no_coll_sec, coll_pos] = collision_detection(obstacles(:,(i-1)*sub_sample+1:(i-1)*sub_sample+1 +sub_sample +1) ,[x';y';theta1], dimension);
 
     %% stick somewhere here the static obstacles code
-    [no_coll_sec, coll_pos] = static_obstacles(obstacles(:,(i-1)*sub_sample+1:(i-1)*sub_sample+1 +sub_sample +1) ,[x';y';theta1],dimension);
+    [no_coll_sec, coll_pos] = static_obstacles(obstacles(:,(i-1)*sub_sample+1:(i-1)*sub_sample+1 +sub_sample +1) ,[x';y';theta1],dimension, car_pose);
     
     no_coll_overall = [ no_coll_overall no_coll_sec];
     coll_pos_overall = [coll_pos_overall; coll_pos];
