@@ -68,7 +68,7 @@ function [curbMat] = createCarObstacle (position, curbMat,rectangle, front,scali
 [ obstacle_matrix ] = createObstacle(position,rectangle, front);
 
 % create a meshgrid of the car coordinates
-[X, Y] = meshgrid(obstacle_matrix(1,1):0.1:obstacle_matrix(3,1),obstacle_matrix(2,1):0.1:obstacle_matrix(2,2));
+[X, Y] = meshgrid(obstacle_matrix(1,1):0.5:obstacle_matrix(3,1),obstacle_matrix(2,1):0.5:obstacle_matrix(2,2));
 
 % add the car obstacle to the obstacle matrix
 curbMat( round(scalingFactor * Y), round(sparseSize / 2 + scalingFactor * X)) = 1;
