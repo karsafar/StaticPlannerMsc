@@ -1,0 +1,2 @@
+# StaticPlannerMsc
+MSc Dissertation Project
